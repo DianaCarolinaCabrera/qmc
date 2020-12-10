@@ -1,9 +1,9 @@
 import tensorflow as tf
-#import qmc.tf.layers as layers
-import qmc.tf.tl.layers as layers
+import qmc.tf.layers as layers
+import qmc.tf.tl.layers_bowl1l2 as layers1
 
 from qmc.tf.layers import QMeasureDensityEig
-from qmc.tf.tl.layers import BOWL1L2
+from qmc.tf.tl.layers_bowl1l2 import BOWL1L2
 
 class QMKDClassifierSGD_BOWL1L2(tf.keras.Model):
     """
@@ -21,7 +21,7 @@ class QMKDClassifierSGD_BOWL1L2(tf.keras.Model):
     """
     def __init__(self, input_dim, dim_x, num_classes, num_eig=0, gamma=1, random_state=None):
         super(QMKDClassifierSGD_BOWL1L2, self).__init__()
-        self.fm_x = layers.BOWL1L2(
+        self.fm_x = layers1.BOWL1L2(
             input_dim=input_dim)
         self.dim_x = dim_x
         self.num_classes = num_classes
