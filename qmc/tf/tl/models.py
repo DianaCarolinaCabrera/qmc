@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+import qmc.tf.layers as layers
 from qmc.tf.layers import QMeasureDensityEig
 from qmc.tf.tl.layers import BOWL1L2
 
