@@ -3,10 +3,9 @@ import numpy as np
 from typeguard import typechecked
 from tensorflow.python.keras import backend as K
 from sklearn import preprocessing
-
 from qmc.tf.layers import QFeatureMapRFF
 
-Class BOWL1L2(tf.keras.layers.Layer):
+class BOWL1L2(tf.keras.layers.Layer):
     """BOWL1L2 layer for replace QFeatureMapRFF function.
     Represents the x_vectors after normalization L1, L2 and rebalanced:
     
