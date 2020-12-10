@@ -709,7 +709,7 @@ class BOWL1L2(tf.keras.layers.Layer):
     @typechecked
     def __init__(
             self,
-            input_dim: float32,
+            input_dim: tf.float32,
             normalizer: string = 'l1',
             **kwargs
     ):
