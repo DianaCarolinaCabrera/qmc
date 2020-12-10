@@ -34,7 +34,7 @@ class BOWL1L2(tf.keras.layers.Layer):
     
     def get_config(self):
         config = {
-            "input_dim" = self.input_dim
+            "input_dim": self.input_dim
         }
         base_config = super().get_config()
         return {**base_config, **config}
