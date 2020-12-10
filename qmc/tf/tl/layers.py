@@ -20,7 +20,7 @@ class BOWL1L2(tf.keras.layers.Layer):
     @typechecked
     def __init__(self, input_dim: int = 1000, **kwargs):
         super(BOWL1L2Layer, self).__init__(**kwargs)
-        if input_dim = 0:
+        if input_dim == 0:
             raise NotImplementedError("Dimension of input "
                                       "{}.".format(input_dim))
         self.input_dim = input_dim
