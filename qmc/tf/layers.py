@@ -710,7 +710,7 @@ class BOWL1L2(tf.keras.layers.Layer):
     def __init__(
             self,
             input_dim: tf.float32,
-            normalizer: string = 'l1',
+            normalizer: str = 'l1',
             **kwargs
     ):
         super().__init__(**kwargs)
