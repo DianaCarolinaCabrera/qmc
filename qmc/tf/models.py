@@ -292,7 +292,7 @@ class QMKDClassifierSGD(tf.keras.Model):
         gamma: float. Gamma parameter of the RBF kernel to be approximated
         random_state: random number generator seed
     """
-    def __init__(self, input_dim, dim_x, num_classes, num_eig=0, gamma=1, random_state=None, dim_vec = ):
+    def __init__(self, input_dim, dim_x, num_classes, num_eig=0, gamma=1, random_state=None):
         super(QMKDClassifierSGD, self).__init__()
         # self.fm_x = layers.QFeatureMapRFF(
         #     input_dim=input_dim,
