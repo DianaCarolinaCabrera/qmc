@@ -706,11 +706,11 @@ class BOWL1L2(tf.keras.layers.Layer):
         gamma: float. Gamma parameter of the RBF kernel to be approximated.
         random_state: random number generator seed.
     """
-
+def 
     @typechecked
     def __init__(
             self,
-            input_dim: x_vectors_bow,
+            input_dim: float32,
             normalizer: string = 'l1',
             **kwargs
     ):
