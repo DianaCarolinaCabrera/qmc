@@ -709,16 +709,18 @@ class BOWL1L2(tf.keras.layers.Layer):
     @typechecked
     def __init__(
             self,
-            input_dim: tf.float32,
+            dim_vec: tf.float32,
+            dim: int = 100,
             normalizer: str = 'l1',
             **kwargs
     ):
         super().__init__(**kwargs)
-        self.input_dim = input_dim
+        self.dim_vec = dim_vec
+        self.dim = dim
         self.normalizer = normalizer
 
     def build(self, input_shape):
-        X_vectors_bowl1l2 = preprocessing.Normalizer().fit_transform(preprocessing.Normalizer().fit_transform(X_vectors_bow, norm=normalizer), norm='l2')
+        X_vectors_bowl1l2 = preprocessing.Normalizer().fit_transform(preprocessing.Normalizer().fit_transform(dim_vec, norm=normalizer), norm='l2')
         # rbf_sampler = RBFSampler(
         #     gamma=self.gamma,
         #     n_components=self.dim,
@@ -757,8 +759,9 @@ class BOWL1L2(tf.keras.layers.Layer):
 
     def get_config(self):
         config = {
-            "input_dim": self.input_dim,
-            "dim": self.dim
+            "dim_vec": self.dim_vec,
+            "dim": self.dim,
+            "normalizer" : self.normalizer
             # "gamma": self.gamma,
             # "random_state": self.random_state
         }
