@@ -1,9 +1,6 @@
 import tensorflow as tf
 import numpy as np
 from typeguard import typechecked
-from tensorflow.python.keras import backend as K
-from sklearn import preprocessing
-from qmc.tf.layers import QFeatureMapRFF
 
 class BOWL1L2(tf.keras.layers.Layer):
     """BOWL1L2 layer for replace QFeatureMapRFF function.
