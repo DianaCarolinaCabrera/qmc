@@ -649,44 +649,115 @@ class DensityMatrixRegression(tf.keras.layers.Layer):
     def compute_output_shape(self, input_shape):
         return (input_shape[1], 2)
 
-class BOWL1L2(tf.keras.layers.Layer):
-    """BOWL1L2 layer for replace QFeatureMapRFF function.
-    Represents the x_vectors after normalization L1, L2 and rebalanced:
+# class BOWL1L2(tf.keras.layers.Layer):
+#     """BOWL1L2 layer for replace QFeatureMapRFF function.
+#     Represents the x_vectors after normalization L1, L2 and rebalanced:
     
+#     Input shape:
+#         (batch_size, dim_in)
+#         where dim_x is the dimension of the input state
+#     Output shape:
+#         (batch_size, dim)
+#     Arguments:
+#         input_dim: int. the dimension of the input
+#     """
+#     @typechecked
+#     def __init__(self, input_dim: int = 1000, **kwargs):
+#         super().__init__(**kwargs)
+#         if input_dim == 0:
+#             raise NotImplementedError("Dimension of input "
+#                                       "{}.".format(input_dim))
+#         self.input_dim = input_dim
+#         self.ctype = tf.Variable(initial_value = input_dim, 
+#                                 dtype = tf.float32,
+#                                 trainable = True,
+#                                 name = "Change_Type")
+
+#     def call(self, inputs):
+#         psi = self.ctype(super().call(inputs))
+#         return psi
+    
+#     def get_config(self):
+#         config = {
+#             "input_dim": self.input_dim
+#         }
+#         base_config = super().get_config()
+#         return {**base_config, **config}
+    
+#     def from_config(cls, config):
+#         return cls(**config)
+    
+#     def compute_output_shape(self, input_shape):
+#         return input_shape
+
+class BOWL1L2(tf.keras.layers.Layer):
+    """Quantum feature map using random Fourier Features.
+    Uses `RBFSampler` from sklearn to approximate an RBF kernel using
+    random Fourier features.
+
     Input shape:
         (batch_size, dim_in)
-        where dim_x is the dimension of the input state
     Output shape:
         (batch_size, dim)
     Arguments:
-        input_dim: int. the dimension of the input
+        input_dim: dimension of the input
+        dim: int. Number of dimensions to represent a sample.
+        gamma: float. Gamma parameter of the RBF kernel to be approximated.
+        random_state: random number generator seed.
     """
+
     @typechecked
-    def __init__(self, input_dim: int = 1000, **kwargs):
+    def __init__(
+            self,
+            input_dim: int,
+            dim: int = 100,
+            gamma: float = 1,
+            random_state=None,
+            **kwargs
+    ):
         super().__init__(**kwargs)
-        if input_dim == 0:
-            raise NotImplementedError("Dimension of input "
-                                      "{}.".format(input_dim))
         self.input_dim = input_dim
-        self.ctype = tf.Variable(initial_value = input_dim, 
-                                dtype = tf.float32,
-                                trainable = True,
-                                name = "Change_Type")
+        self.dim = dim
+        self.gamma = gamma
+        self.random_state = random_state
+
+
+    def build(self, input_shape):
+        rbf_sampler = RBFSampler(
+            gamma=self.gamma,
+            n_components=self.dim,
+            random_state=self.random_state)
+        x = np.zeros(shape=(1, self.input_dim))
+        rbf_sampler.fit(x)
+        self.rff_weights = tf.Variable(
+            initial_value=rbf_sampler.random_weights_,
+            dtype=tf.float32,
+            trainable=False,
+            name="rff_weights")
+        self.offset = tf.Variable(
+            initial_value=rbf_sampler.random_offset_,
+            dtype=tf.float32,
+            trainable=False,
+            name="offset")
+        self.built = True
 
     def call(self, inputs):
-        psi = self.ctype(super().call(inputs))
+        vals = tf.matmul(inputs, self.rff_weights) + self.offset
+        vals = tf.cos(vals)
+        vals = vals * tf.sqrt(2. / self.dim)
+        norms = tf.linalg.norm(vals, axis=1)
+        psi = vals / tf.expand_dims(norms, axis=-1)
         return psi
-    
+
     def get_config(self):
         config = {
-            "input_dim": self.input_dim
+            "input_dim": self.input_dim,
+            "dim": self.dim,
+            "gamma": self.gamma,
+            "random_state": self.random_state
         }
         base_config = super().get_config()
         return {**base_config, **config}
-    
-    def from_config(cls, config):
-        return cls(**config)
-    
+
     def compute_output_shape(self, input_shape):
-        return input_shape
-    
+        return (input_shape[0], self.dim)
