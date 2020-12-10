@@ -5,6 +5,7 @@ utilities.
 
 import numpy as np
 import tensorflow as tf
+from sklearn import preprocessing
 from typeguard import typechecked
 from sklearn.kernel_approximation import RBFSampler
 
@@ -709,35 +710,41 @@ class BOWL1L2(tf.keras.layers.Layer):
     @typechecked
     def __init__(
             self,
-            input_dim: int,
-            dim: int = 100,
-            gamma: float = 1,
-            random_state=None,
+            input_dim: x_vectors_bow,
+            normalizer: string = 'l1',
             **kwargs
     ):
         super().__init__(**kwargs)
         self.input_dim = input_dim
-        self.dim = dim
-        self.gamma = gamma
-        self.random_state = random_state
-
+        self.normalizer = normalizer
 
     def build(self, input_shape):
-        rbf_sampler = RBFSampler(
-            gamma=self.gamma,
-            n_components=self.dim,
-            random_state=self.random_state)
-        x = np.zeros(shape=(1, self.input_dim))
-        rbf_sampler.fit(x)
+        X_vectors_bowl1l2 = preprocessing.Normalizer().fit_transform(preprocessing.Normalizer().fit_transform(X_vectors_bow, norm=normalizer), norm='l2')
+        # rbf_sampler = RBFSampler(
+        #     gamma=self.gamma,
+        #     n_components=self.dim,
+        #     random_state=self.random_state)
+        # x = np.zeros(shape=(1, self.input_dim))
+        # rbf_sampler.fit(x)
+        # self.rff_weights = tf.Variable(
+        #     initial_value=rbf_sampler.random_weights_,
+        #     dtype=tf.float32,
+        #     trainable=False,
+        #     name="rff_weights")
         self.rff_weights = tf.Variable(
-            initial_value=rbf_sampler.random_weights_,
+            initial_value=X_vectors_bowl1l2.random_weights_,
             dtype=tf.float32,
-            trainable=False,
-            name="rff_weights")
+            trainable=True,
+            name="rff_weights")        
+        # self.offset = tf.Variable(
+        #     initial_value=rbf_sampler.random_offset_,
+        #     dtype=tf.float32,
+        #     trainable=False,
+        #     name="offset")
         self.offset = tf.Variable(
-            initial_value=rbf_sampler.random_offset_,
+            initial_value=X_vectors_bowl1l2.random_offset_,
             dtype=tf.float32,
-            trainable=False,
+            trainable=True,
             name="offset")
         self.built = True
 
@@ -752,9 +759,9 @@ class BOWL1L2(tf.keras.layers.Layer):
     def get_config(self):
         config = {
             "input_dim": self.input_dim,
-            "dim": self.dim,
-            "gamma": self.gamma,
-            "random_state": self.random_state
+            "dim": self.dim
+            # "gamma": self.gamma,
+            # "random_state": self.random_state
         }
         base_config = super().get_config()
         return {**base_config, **config}
