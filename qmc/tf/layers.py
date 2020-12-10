@@ -670,11 +670,12 @@ class BOWL1L2(tf.keras.layers.Layer):
         self.input_dim = input_dim
         self.ctype = tf.Variable(initial_value = input_dim, 
                                 dtype = tf.float32,
-                                trainable = False,
+                                trainable = True,
                                 name = "Change_Type")
 
     def call(self, inputs):
-        return self.ctype(super().call(inputs))
+        psi = self.ctype(super().call(inputs))
+        return psi
     
     def get_config(self):
         config = {
