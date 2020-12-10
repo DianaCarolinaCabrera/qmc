@@ -6,7 +6,7 @@ from sklearn import preprocessing
 
 from qmc.tf.layers import QFeatureMapRFF
 
-Class BOWL1L2Layer(tf.keras.layers.Layer):
+Class BOWL1L2(tf.keras.layers.Layer):
     """BOWL1L2 layer for replace QFeatureMapRFF function.
     Represents the x_vectors after normalization L1, L2 and rebalanced:
     
@@ -40,7 +40,6 @@ Class BOWL1L2Layer(tf.keras.layers.Layer):
         base_config = super().get_config()
         return {**base_config, **config}
     
-    @classmethod
     def from_config(cls, config):
         return cls(**config)
     
