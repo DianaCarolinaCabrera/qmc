@@ -462,7 +462,7 @@ class QMKDClassifierSGD_BOWL1L2(tf.keras.Model):
         self.num_classes = num_classes
         self.qmd = []
         for _ in range(num_classes):
-            self.qmd.append(QMeasureDensityEig(dim_x, num_eig))
+            self.qmd.append(layers.QMeasureDensityEig(dim_x, num_eig))
         self.gamma = gamma
         self.random_state = random_state
 
