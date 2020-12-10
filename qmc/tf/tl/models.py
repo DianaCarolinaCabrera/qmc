@@ -1,7 +1,7 @@
 import tensorflow as tf
 
 from qmc.tf.layers import QMeasureDensityEig
-from qmc.tf.tt.layers import BOWL1L2Layer
+from qmc.tf.tl.layers import BOWL1L2Layer
 
 class QMKDClassifierSGD_BOWL1L2(tf.keras.Model):
     """
