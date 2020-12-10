@@ -19,7 +19,7 @@ class QMKDClassifierSGD_BOWL1L2(tf.keras.Model):
     """
     def __init__(self, input_dim, dim_x, num_classes, num_eig=0, gamma=1, random_state=None):
         super(QMKDClassifierSGD_BOWL1L2, self).__init__()
-        self.fm_x = layers.BOWL1L2Layer(
+        self.fm_x = layers.BOWL1L2(
             input_dim=input_dim)
         self.dim_x = dim_x
         self.num_classes = num_classes
