@@ -723,3 +723,114 @@ class W2VL2(tf.keras.layers.Layer):
     
     def compute_output_shape(self, input_shape):
         return input_shape
+
+class BOWL1(tf.keras.layers.Layer):
+    """BOW_L1 layer for replace QFeatureMapRFF function.
+    Represents the x_vectors after normalization L1 and rebalanced:
+    
+    Input shape:
+        (batch_size, dim_in)
+        where dim_x is the dimension of the input state
+    Output shape:
+        (batch_size, dim)
+    Arguments:
+        input_dim: int. the dimension of the input
+    """
+    @typechecked
+    def __init__(self, input_dim: int = 1000, **kwargs):
+        super().__init__(**kwargs)
+        if input_dim == 0:
+            raise NotImplementedError("Dimension of input "
+                                      "{}.".format(input_dim))
+        self.input_dim = input_dim
+
+    def call(self, inputs):
+        return inputs
+
+    
+    def get_config(self):
+        config = {
+            "input_dim": self.input_dim
+        }
+        base_config = super().get_config()
+        return {**base_config, **config}
+    
+    def from_config(cls, config):
+        return cls(**config)
+    
+    def compute_output_shape(self, input_shape):
+        return input_shape
+
+class TFIDFL1(tf.keras.layers.Layer):
+    """TFIDF_L1 layer for replace QFeatureMapRFF function.
+    Represents the x_vectors after normalization L1 and rebalanced:
+    
+    Input shape:
+        (batch_size, dim_in)
+        where dim_x is the dimension of the input state
+    Output shape:
+        (batch_size, dim)
+    Arguments:
+        input_dim: int. the dimension of the input
+    """
+    @typechecked
+    def __init__(self, input_dim: int = 1000, **kwargs):
+        super().__init__(**kwargs)
+        if input_dim == 0:
+            raise NotImplementedError("Dimension of input "
+                                      "{}.".format(input_dim))
+        self.input_dim = input_dim
+
+    def call(self, inputs):
+        return inputs
+
+    
+    def get_config(self):
+        config = {
+            "input_dim": self.input_dim
+        }
+        base_config = super().get_config()
+        return {**base_config, **config}
+    
+    def from_config(cls, config):
+        return cls(**config)
+    
+    def compute_output_shape(self, input_shape):
+        return input_shape
+
+class TFIDFL1L2(tf.keras.layers.Layer):
+    """TFIDFL1L2 layer for replace QFeatureMapRFF function.
+    Represents the x_vectors after normalization L1, L2 and rebalanced:
+    
+    Input shape:
+        (batch_size, dim_in)
+        where dim_x is the dimension of the input state
+    Output shape:
+        (batch_size, dim)
+    Arguments:
+        input_dim: int. the dimension of the input
+    """
+    @typechecked
+    def __init__(self, input_dim: int = 1000, **kwargs):
+        super().__init__(**kwargs)
+        if input_dim == 0:
+            raise NotImplementedError("Dimension of input "
+                                      "{}.".format(input_dim))
+        self.input_dim = input_dim
+
+    def call(self, inputs):
+        return inputs
+
+    
+    def get_config(self):
+        config = {
+            "input_dim": self.input_dim
+        }
+        base_config = super().get_config()
+        return {**base_config, **config}
+    
+    def from_config(cls, config):
+        return cls(**config)
+    
+    def compute_output_shape(self, input_shape):
+        return input_shape
